@@ -21,30 +21,36 @@ def getBetsResults(rowData):
                 rowBookie["teamB"]["payOffPercent"],
                 rowBookie["payOffDraw"],
             ]
-            # min in the list has the best positive EV chances
-            to_win = min(odds_list)
-            odds_list.remove(to_win)
-
-            odds_win = getProbability(to_win)
-            odds_lose = sum(map(getProbability, odds_list))
+            result = getEv(odds_list)
 
             print(rowBookie)
-            print(
-                "("
-                + str(getAmountWonPerBet(default_bet, to_win))
-                + "*"
-                + str(odds_win)
-                + ")-("
-                + str(default_bet)
-                + "*"
-                + str(odds_lose)
-                + ")"
-            )
-
-            result = (getAmountWonPerBet(default_bet, to_win) * odds_win) - (
-                default_bet * odds_lose
-            )
             print(result)
+
+
+def getEv(odds_list):
+    # min in the list has the best positive EV chances
+    to_win = min(odds_list)
+    odds_list.remove(to_win)
+
+    odds_win = getProbability(to_win)
+    odds_lose = sum(map(getProbability, odds_list))
+
+    print(
+        "("
+        + str(getAmountWonPerBet(default_bet, to_win))
+        + "*"
+        + str(odds_win)
+        + ")-("
+        + str(default_bet)
+        + "*"
+        + str(odds_lose)
+        + ")"
+    )
+
+    result = (getAmountWonPerBet(default_bet, to_win) * odds_win) - (
+        default_bet * odds_lose
+    )
+    return result
 
 
 def getProbability(decimalOdd):
